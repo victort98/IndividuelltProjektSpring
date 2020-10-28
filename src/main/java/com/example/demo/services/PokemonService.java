@@ -37,11 +37,11 @@ public class PokemonService {
         return pokemonRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the pokemon"));
     }
 
-    public Pokemon savePokemon(Pokemon pokemon) {
+    public Pokemon save(Pokemon pokemon) {
         return pokemonRepository.save(pokemon);
     }
 
-    public void updatePokemon(String id, Pokemon pokemon) {
+    public void update(String id, Pokemon pokemon) {
         if(!pokemonRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find a pokemon with that id");
         }
@@ -49,7 +49,7 @@ public class PokemonService {
         pokemonRepository.save(pokemon);
     }
 
-    public void deletePokemon(String id) {
+    public void delete(String id) {
         if(!pokemonRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find a pokemon with that id");
         }
