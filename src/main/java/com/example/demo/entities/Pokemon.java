@@ -11,8 +11,10 @@ public class Pokemon {
     private String name;
     private String height;
     private String weight;
-    private List<Type> types;
     private String baseExperience;
+    private String locationEncounter;
+    private List<Type> types;
+    private List<Ability> abilities;
 
     public Pokemon() {
     }

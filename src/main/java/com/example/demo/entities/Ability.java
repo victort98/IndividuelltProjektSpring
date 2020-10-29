@@ -1,11 +1,8 @@
 package com.example.demo.entities;
 
-import org.springframework.data.annotation.Id;
 
 public class Ability {
 
-    @Id
-    private String id;
     private GeneralInfo ability;
 
     public Ability() {
