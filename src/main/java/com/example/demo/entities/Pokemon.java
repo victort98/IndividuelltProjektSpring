@@ -21,11 +21,16 @@ public class Pokemon {
     public Pokemon() {
     }
 
-    public Pokemon(String name, String height, String weight, List<Type> types) {
+    public Pokemon(String name, String height, String weight, String baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities, List<Game> games, Specie specie) {
         this.name = name;
         this.height = height;
         this.weight = weight;
+        this.baseExperience = baseExperience;
+        this.locationEncounter = locationEncounter;
         this.types = types;
+        this.abilities = abilities;
+        this.games = games;
+        this.specie = specie;
     }
 
     public String getId() {
@@ -60,11 +65,51 @@ public class Pokemon {
         this.weight = weight;
     }
 
+    public String getBaseExperience() {
+        return baseExperience;
+    }
+
+    public void setBaseExperience(String baseExperience) {
+        this.baseExperience = baseExperience;
+    }
+
+    public String getLocationEncounter() {
+        return locationEncounter;
+    }
+
+    public void setLocationEncounter(String locationEncounter) {
+        this.locationEncounter = locationEncounter;
+    }
+
     public List<Type> getTypes() {
         return types;
     }
 
     public void setTypes(List<Type> types) {
         this.types = types;
+    }
+
+    public List<Ability> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(List<Ability> abilities) {
+        this.abilities = abilities;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
+    public Specie getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(Specie specie) {
+        this.specie = specie;
     }
 }
