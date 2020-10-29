@@ -1,12 +1,15 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.PokemonDto;
 import com.example.demo.entities.Pokemon;
+import com.example.demo.repositories.GeneralInfoRepository;
 import com.example.demo.repositories.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +18,12 @@ public class PokemonService {
 
     @Autowired
     private PokemonRepository pokemonRepository;
+
+    @Autowired
+    private GeneralInfoRepository generalInfoRepository;
+
+    @Autowired
+    private PokemonConsumerService pokemonConsumerService;
 
 
     public List<Pokemon> findPokemonByNameAndOrType(String name, String type) {
@@ -30,7 +39,7 @@ public class PokemonService {
                     return pokemonFromDB;
                 }
         }
-            //return pokemon from api and save
+            return getPokemonAndSave(name);
     }
 
     public Pokemon findById(String id) {
@@ -56,6 +65,14 @@ public class PokemonService {
         pokemonRepository.deleteById(id);
     }
 
+    private Boolean pokemonInDb (PokemonDto pokemonDto) {
+        var pokemonAlreadyInDb = pokemonRepository.findAll();
+        pokemonAlreadyInDb = pokemonAlreadyInDb.stream()
+                .filter(pokemon -> pokemon.getName().toLowerCase().equals(pokemonDto.getName()))
+                .collect(Collectors.toList());
+        return !pokemonAlreadyInDb.isEmpty();
+    }
+
     private List<Pokemon> pokemonNameAndTypeInDB (String name, String type){
         var pokemonsInDB = pokemonRepository.findAll();
         pokemonsInDB = pokemonsInDB.stream()
@@ -77,6 +94,29 @@ public class PokemonService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that name");
         }
         return pokemonInDB;
+    }
+
+    private List<Pokemon> getPokemonAndSave (String name) {
+        var pokemons = generalInfoRepository.findAll();
+        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+
+        var pokemonsWithInfo = new ArrayList<Pokemon>();
+
+        pokemons.forEach(pokemon -> {
+            var pokemonDto = pokemonConsumerService.search(name);
+            var pokemonWithInfo = new Pokemon(pokemonDto.getName(), pokemonDto.getHeight(), pokemonDto.getWeight(),
+                    pokemonDto.getBaseExperience(), pokemonDto.getLocationEncounter(),pokemonDto.getTypes(),
+                    pokemonDto.getAbilities(), pokemonDto.getGames(), pokemonDto.getSpecie());
+
+            var pokemonInDb = pokemonInDb(pokemonDto);
+            if(!pokemonInDb) {
+                this.save(pokemonWithInfo);
+            }
+            pokemonsWithInfo.add(pokemonWithInfo);
+        });
+        return pokemonsWithInfo;
     }
 
 }
