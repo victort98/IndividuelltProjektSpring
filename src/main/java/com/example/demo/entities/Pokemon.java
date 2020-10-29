@@ -15,6 +15,8 @@ public class Pokemon {
     private String locationEncounter;
     private List<Type> types;
     private List<Ability> abilities;
+    private List<Game> games;
+    private Specie specie;
 
     public Pokemon() {
     }
