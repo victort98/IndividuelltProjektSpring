@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class RestErrorHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<String> handleNotFOund(ResponseStatusException e) {
+    public ResponseEntity<String> handleNotFound(ResponseStatusException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sorry, can't find that");
     }
 }
