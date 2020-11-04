@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.PokemonDto;
+import com.example.demo.entities.ListOfPokemon;
 import com.example.demo.entities.Pokemon;
 import com.example.demo.repositories.GeneralInfoRepository;
 import com.example.demo.repositories.PokemonRepository;
@@ -26,20 +27,18 @@ public class PokemonService {
     private PokemonConsumerService pokemonConsumerService;
 
 
-    public List<Pokemon> findPokemonByNameAndOrType(String name, String type) {
-        if(name != null && type != null) {
-            var pokemonFromDB = pokemonNameAndTypeInDB(name, type);
-            if(!pokemonFromDB.isEmpty()) {
-                    return pokemonFromDB;
-                }
-            }
-            else if(name != null) {
-                var pokemonFromDB = pokemonNameInDB(name);
-                if(!pokemonFromDB.isEmpty()) {
-                    return pokemonFromDB;
-                }
+    public List<Pokemon> findPokemonByNameTypeHeightWeightAbility(String name, String type, String ability) {
+        var pokemon = pokemonRepository.findAll();
+        if(type != null) {
+            pokemon = filterPokemonsByType(type, pokemon);
         }
-            return getPokemonAndSave(name);
+        if(name != null) {
+            pokemon = filterPokemonsByName(name, pokemon);
+        }
+        if(ability != null) {
+            pokemon = filterPokemonsByAbility(ability, pokemon);
+        }
+            return pokemon;
     }
 
     public Pokemon findById(String id) {
@@ -65,7 +64,7 @@ public class PokemonService {
         pokemonRepository.deleteById(id);
     }
 
-    private Boolean pokemonInDb (PokemonDto pokemonDto) {
+    private Boolean pokemonInDbMatch (PokemonDto pokemonDto) {
         var pokemonAlreadyInDb = pokemonRepository.findAll();
         pokemonAlreadyInDb = pokemonAlreadyInDb.stream()
                 .filter(pokemon -> pokemon.getName().toLowerCase().equals(pokemonDto.getName()))
@@ -73,27 +72,38 @@ public class PokemonService {
         return !pokemonAlreadyInDb.isEmpty();
     }
 
-    private List<Pokemon> pokemonNameAndTypeInDB (String name, String type){
-        var pokemonsInDB = pokemonRepository.findAll();
-        pokemonsInDB = pokemonsInDB.stream()
-                .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
-                .filter(pokemon -> pokemon.getTypes().stream().anyMatch(pokemonType -> pokemonType.getType().name.toLowerCase().contains(type)))
-                .collect(Collectors.toList());
-        if(pokemonsInDB.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that name and type");
-        }
-        return pokemonsInDB;
-    }
 
-    private List<Pokemon> pokemonNameInDB (String name) {
-        var pokemonInDB = pokemonRepository.findAll();
-        pokemonInDB = pokemonInDB.stream()
+    private List<Pokemon> filterPokemonsByName(String name, List<Pokemon> pokemons) {
+        pokemons = pokemons.stream()
                 .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
                 .collect(Collectors.toList());
-        if(pokemonInDB.isEmpty()) {
+        if(pokemons.isEmpty()) {
+            pokemons = this.getPokemonAndSave(name);
+        }
+        if(pokemons.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that name");
         }
-        return pokemonInDB;
+        return pokemons;
+    }
+
+    private List<Pokemon> filterPokemonsByType(String type, List<Pokemon> pokemons) {
+        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getTypes().stream().anyMatch(pokemonType -> pokemonType.getType().name.toLowerCase().contains(type)))
+                .collect(Collectors.toList());
+        if(pokemons.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that type");
+        }
+        return pokemons;
+    }
+
+    private List<Pokemon> filterPokemonsByAbility(String ability, List<Pokemon> pokemons) {
+        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getAbilities().stream().anyMatch(pokemonAbility -> pokemonAbility.getAbility().name.toLowerCase().contains(ability)))
+                .collect(Collectors.toList());
+        if(pokemons.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that ability");
+        }
+        return pokemons;
     }
 
     private List<Pokemon> getPokemonAndSave (String name) {
@@ -105,12 +115,12 @@ public class PokemonService {
         var pokemonsWithInfo = new ArrayList<Pokemon>();
 
         pokemons.forEach(pokemon -> {
-            var pokemonDto = pokemonConsumerService.search(name);
+            var pokemonDto = pokemonConsumerService.search(pokemon.getName());
             var pokemonWithInfo = new Pokemon(pokemonDto.getName(), pokemonDto.getHeight(), pokemonDto.getWeight(),
                     pokemonDto.getBaseExperience(), pokemonDto.getLocationEncounter(),pokemonDto.getTypes(),
-                    pokemonDto.getAbilities(), pokemonDto.getGames(), pokemonDto.getSpecie());
+                    pokemonDto.getAbilities());
 
-            var pokemonInDb = pokemonInDb(pokemonDto);
+            var pokemonInDb = pokemonInDbMatch(pokemonDto);
             if(!pokemonInDb) {
                 this.save(pokemonWithInfo);
             }

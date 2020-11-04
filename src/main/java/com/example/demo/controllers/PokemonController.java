@@ -12,15 +12,17 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/pokedex")
+@RequestMapping("/api/v1/pokemon")
 public class PokemonController {
 
     @Autowired
     private PokemonService pokemonService;
 
     @GetMapping
-    public ResponseEntity<List<Pokemon>> findPokemonByNameAndOrType (@RequestParam String name, @RequestParam(required = false) String type) {
-        var pokemon = pokemonService.findPokemonByNameAndOrType(name, type);
+    public ResponseEntity<List<Pokemon>> findPokemonByNameTypeHeightWeight (@RequestParam(required = false) String name,
+                                                                            @RequestParam(required = false) String type,
+                                                                            @RequestParam(required = false) String ability) {
+        var pokemon = pokemonService.findPokemonByNameTypeHeightWeightAbility(name, type, ability);
         if(pokemon.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pokemon);
         }
@@ -35,7 +37,7 @@ public class PokemonController {
     @PostMapping
     public ResponseEntity<Pokemon> savePokemon(@RequestBody Pokemon pokemon) {
         var savedPokemon = pokemonService.save(pokemon);
-        var uri = URI.create("/api/v1/pokedex" + savedPokemon.getId());
+        var uri = URI.create("/api/v1/pokemon" + savedPokemon.getId());
         return ResponseEntity.created(uri).body(savedPokemon);
     }
 
