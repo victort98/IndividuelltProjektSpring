@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    @Secured("ROLE_USER")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<User>> findAllUsers(@RequestParam(required = false) String username) {
         var users = userService.findAll(username);
         return ResponseEntity.ok(users);

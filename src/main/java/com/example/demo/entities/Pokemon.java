@@ -9,19 +9,17 @@ public class Pokemon {
     @Id
     private String id;
     private String name;
-    private String height;
-    private String weight;
-    private String baseExperience;
+    private int height;
+    private int weight;
+    private int baseExperience;
     private String locationEncounter;
     private List<Type> types;
     private List<Ability> abilities;
-    private List<Game> games;
-    private Specie specie;
 
     public Pokemon() {
     }
 
-    public Pokemon(String name, String height, String weight, String baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities, List<Game> games, Specie specie) {
+    public Pokemon(String name, int height, int weight, int baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities) {
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -29,8 +27,6 @@ public class Pokemon {
         this.locationEncounter = locationEncounter;
         this.types = types;
         this.abilities = abilities;
-        this.games = games;
-        this.specie = specie;
     }
 
     public String getId() {
@@ -49,27 +45,27 @@ public class Pokemon {
         this.name = name;
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public String getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public String getBaseExperience() {
+    public int getBaseExperience() {
         return baseExperience;
     }
 
-    public void setBaseExperience(String baseExperience) {
+    public void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
     }
 
@@ -95,21 +91,5 @@ public class Pokemon {
 
     public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
-    }
-
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
-
-    public Specie getSpecie() {
-        return specie;
-    }
-
-    public void setSpecie(Specie specie) {
-        this.specie = specie;
     }
 }

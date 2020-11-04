@@ -1,8 +1,6 @@
 package com.example.demo.dto;
 
 import com.example.demo.entities.Ability;
-import com.example.demo.entities.Game;
-import com.example.demo.entities.Specie;
 import com.example.demo.entities.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,33 +11,26 @@ public class PokemonDto {
     @JsonProperty("Name")
     private String name;
     @JsonProperty("Height")
-    private String height;
+    private int height;
     @JsonProperty("Weight")
-    private String weight;
+    private int weight;
     @JsonProperty("Base Experience")
-    private String baseExperience;
+    private int baseExperience;
     @JsonProperty("Location Encounter")
     private String locationEncounter;
     @JsonProperty("Types")
     private List<Type> types;
     @JsonProperty("Abilities")
     private List<Ability> abilities;
-    @JsonProperty("Game implemented")
-    private List<Game> games;
-    @JsonProperty("Species")
-    private Specie specie;
 
-    public PokemonDto(String name, String height, String weight, String baseExperience, String locationEncounter,
-                      List<Type> types, List<Ability> abilities, List<Game> games, Specie specie) {
+    public PokemonDto(String name, int height, int weight, int base_experience, String location_area_encounters, List<Type> types, List<Ability> abilities) {
         this.name = name;
         this.height = height;
         this.weight = weight;
-        this.baseExperience = baseExperience;
-        this.locationEncounter = locationEncounter;
+        this.baseExperience = base_experience;
+        this.locationEncounter = location_area_encounters;
         this.types = types;
         this.abilities = abilities;
-        this.games = games;
-        this.specie = specie;
     }
 
     public String getName() {
@@ -50,27 +41,27 @@ public class PokemonDto {
         this.name = name;
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public String getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public String getBaseExperience() {
+    public int getBaseExperience() {
         return baseExperience;
     }
 
-    public void setBaseExperience(String baseExperience) {
+    public void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
     }
 
@@ -98,19 +89,4 @@ public class PokemonDto {
         this.abilities = abilities;
     }
 
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
-
-    public Specie getSpecie() {
-        return specie;
-    }
-
-    public void setSpecie(Specie specie) {
-        this.specie = specie;
-    }
 }
