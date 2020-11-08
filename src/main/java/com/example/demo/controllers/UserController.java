@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Secured({"ROLE_EDITOR", "ROLE_ADMIN"})
+    @Secured({"ROLE_EDITOR", "ROLE_ADMIN", "ROLE_USER"})
     @Operation(summary = "Update user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully updated user."),
@@ -68,6 +68,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Invalid.", content = @Content)
     })
     @ResponseStatus(HttpStatus.NO_CONTENT) // status code 204
+
     public void updateUser(@PathVariable String id, @Validated @RequestBody User user) {
         userService.update(id, user);
     }

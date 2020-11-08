@@ -15,6 +15,9 @@ import java.util.List;
 public class UserService {
 
     @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,13 +51,17 @@ public class UserService {
     }
 
     public void update(String id, User user) {
+        var currentUser = findByUsername(myUserDetailsService.getCurrentUser());
         if(!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Could not find the ser by id %s.", id));
+                    String.format("Could not find the user by id %s.", id));
         }
-        user.setId(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        if(sameUserOrAdmin(currentUser, id)) {
+            user.setId(id);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
+        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can not update this user");
     }
 
     public void delete(String id) {
@@ -63,5 +70,9 @@ public class UserService {
                     String.format("Could not find the user by id %s.", id));
         }
         userRepository.deleteById(id);
+    }
+
+    private Boolean sameUserOrAdmin (User currentUser, String id) {
+        return (currentUser.getId().equals(id) || currentUser.getRoles().contains("ADMIN"));
     }
 }
