@@ -27,7 +27,7 @@ public class PokemonService {
     private PokemonConsumerService pokemonConsumerService;
 
 
-    public List<Pokemon> findPokemonByNameTypeHeightWeightAbility(String name, String type, String ability) {
+    public List<Pokemon> findPokemon(String name, String type, String ability) {
         var pokemon = pokemonRepository.findAll();
         if(type != null) {
             pokemon = filterPokemonsByType(type, pokemon);

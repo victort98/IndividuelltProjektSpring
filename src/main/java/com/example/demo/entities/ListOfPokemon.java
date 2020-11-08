@@ -3,20 +3,20 @@ package com.example.demo.entities;
 import java.util.List;
 
 public class ListOfPokemon {
-    private List<GeneralInfo> results;
+    private List<NameAndUrl> results;
 
     public ListOfPokemon() {
     }
 
-    public ListOfPokemon(List<GeneralInfo> results) {
+    public ListOfPokemon(List<NameAndUrl> results) {
         this.results = results;
     }
 
-    public List<GeneralInfo> getResults() {
+    public List<NameAndUrl> getResults() {
         return results;
     }
 
-    public void setResults(List<GeneralInfo> results) {
+    public void setResults(List<NameAndUrl> results) {
         this.results = results;
     }
 }

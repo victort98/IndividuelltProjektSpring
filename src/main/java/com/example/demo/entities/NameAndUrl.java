@@ -1,13 +1,13 @@
 package com.example.demo.entities;
 
-public class GeneralInfo {
+public class NameAndUrl {
     public String name;
     public String url;
 
-    public GeneralInfo() {
+    public NameAndUrl() {
     }
 
-    public GeneralInfo(String name, String url) {
+    public NameAndUrl(String name, String url) {
         this.name = name;
         this.url = url;
     }

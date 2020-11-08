@@ -1,20 +1,20 @@
 package com.example.demo.entities;
 
 public class Type {
-    private GeneralInfo type;
+    private NameAndUrl type;
 
     public Type() {
     }
 
     public Type(String name, String url) {
-        this.type = new GeneralInfo(name, url);
+        this.type = new NameAndUrl(name, url);
     }
 
-    public GeneralInfo getType() {
+    public NameAndUrl getType() {
         return type;
     }
 
-    public void setType(GeneralInfo type) {
+    public void setType(NameAndUrl type) {
         this.type = type;
     }
 }
