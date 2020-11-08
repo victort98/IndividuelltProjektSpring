@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint entryPoint;
 
     @Autowired
-    MyUserDetailsService userDetailsService;
+    private MyUserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -34,8 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/open").permitAll()
-                .antMatchers("/api/v1/pokemon/**").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .and()
                 .httpBasic().authenticationEntryPoint(entryPoint)
                 .and()
