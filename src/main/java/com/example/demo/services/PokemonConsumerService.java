@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.dto.PokemonDto;
 import com.example.demo.entities.ListOfPokemon;
 import com.example.demo.repositories.GeneralInfoRepository;
-import com.example.demo.repositories.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
