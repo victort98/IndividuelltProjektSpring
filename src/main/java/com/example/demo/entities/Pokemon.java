@@ -15,11 +15,12 @@ public class Pokemon {
     private String locationEncounter;
     private List<Type> types;
     private List<Ability> abilities;
+    private List<Move> moves;
 
     public Pokemon() {
     }
 
-    public Pokemon(String name, int height, int weight, int baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities) {
+    public Pokemon(String name, int height, int weight, int baseExperience, String locationEncounter, List<Type> types, List<Ability> abilities, List<Move> moves) {
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -27,6 +28,7 @@ public class Pokemon {
         this.locationEncounter = locationEncounter;
         this.types = types;
         this.abilities = abilities;
+        this.moves = moves;
     }
 
     public String getId() {
@@ -91,5 +93,13 @@ public class Pokemon {
 
     public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
+    }
+
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
     }
 }

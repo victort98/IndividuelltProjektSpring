@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.entities.Ability;
+import com.example.demo.entities.Move;
 import com.example.demo.entities.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,8 +23,10 @@ public class PokemonDto {
     private List<Type> types;
     @JsonProperty("Abilities")
     private List<Ability> abilities;
+    @JsonProperty("Moves")
+    private List<Move> moves;
 
-    public PokemonDto(String name, int height, int weight, int base_experience, String location_area_encounters, List<Type> types, List<Ability> abilities) {
+    public PokemonDto(String name, int height, int weight, int base_experience, String location_area_encounters, List<Type> types, List<Ability> abilities, List<Move> moves) {
         this.name = name;
         this.height = height;
         this.weight = weight;
@@ -31,6 +34,7 @@ public class PokemonDto {
         this.locationEncounter = location_area_encounters;
         this.types = types;
         this.abilities = abilities;
+        this.moves = moves;
     }
 
     public String getName() {
@@ -89,4 +93,11 @@ public class PokemonDto {
         this.abilities = abilities;
     }
 
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
 }

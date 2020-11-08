@@ -27,7 +27,7 @@ public class PokemonService {
     private PokemonConsumerService pokemonConsumerService;
 
 
-    public List<Pokemon> findPokemon(String name, String type, String ability) {
+    public List<Pokemon> findPokemon(String name, String type, String ability, String move) {
         var pokemon = pokemonRepository.findAll();
         if(type != null) {
             pokemon = filterPokemonsByType(type, pokemon);
@@ -37,6 +37,9 @@ public class PokemonService {
         }
         if(ability != null) {
             pokemon = filterPokemonsByAbility(ability, pokemon);
+        }
+        if(move != null) {
+            pokemon = filterPokemonsByMove(move, pokemon);
         }
             return pokemon;
     }
@@ -106,6 +109,16 @@ public class PokemonService {
         return pokemons;
     }
 
+    private List<Pokemon> filterPokemonsByMove(String move, List<Pokemon> pokemons) {
+        pokemons = pokemons.stream()
+                .filter(pokemon -> pokemon.getMoves().stream().anyMatch(pokemonMove -> pokemonMove.getMove().name.toLowerCase().contains(move)))
+                .collect(Collectors.toList());
+        if(pokemons.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that move");
+        }
+        return pokemons;
+    }
+
     private List<Pokemon> getPokemonAndSave (String name) {
         var pokemons = generalInfoRepository.findAll();
         pokemons = pokemons.stream()
@@ -118,7 +131,7 @@ public class PokemonService {
             var pokemonDto = pokemonConsumerService.search(pokemon.getName());
             var pokemonWithInfo = new Pokemon(pokemonDto.getName(), pokemonDto.getHeight(), pokemonDto.getWeight(),
                     pokemonDto.getBaseExperience(), pokemonDto.getLocationEncounter(),pokemonDto.getTypes(),
-                    pokemonDto.getAbilities());
+                    pokemonDto.getAbilities(), pokemonDto.getMoves());
 
             var pokemonInDb = pokemonInDbMatch(pokemonDto);
             if(!pokemonInDb) {

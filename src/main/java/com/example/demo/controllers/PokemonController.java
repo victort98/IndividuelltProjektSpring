@@ -30,8 +30,9 @@ public class PokemonController {
     })
     public ResponseEntity<List<Pokemon>> findPokemon (@RequestParam(required = false) String name,
                                                       @RequestParam(required = false) String type,
-                                                      @RequestParam(required = false) String ability) {
-        var pokemon = pokemonService.findPokemon(name, type, ability);
+                                                      @RequestParam(required = false) String ability,
+                                                      @RequestParam(required = false) String move) {
+        var pokemon = pokemonService.findPokemon(name, type, ability, move);
         if(pokemon.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pokemon);
         }
