@@ -19,9 +19,6 @@ public class PokemonConsumerService {
     @Autowired
     private GeneralInfoRepository generalInfoRepository;
 
-    @Autowired
-    PokemonRepository pokemonRepository;
-
     private final RestTemplate restTemplate;
 
 
@@ -31,7 +28,6 @@ public class PokemonConsumerService {
 
     public PokemonDto search(String name){
         var pokemon = generalInfoRepository.findByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find any pokemon"));
-        var nameUrl = pokemon.name + " " + pokemon.url;
         var pokemons = restTemplate.getForObject(pokemon.url,PokemonDto.class);
         if(pokemons != null){
             pokemons.setName(pokemon.name);
@@ -42,6 +38,7 @@ public class PokemonConsumerService {
         return pokemons;
     }
 
+    @PostConstruct
     public void savePokemon() {
         var pokeapiURL = "https://pokeapi.co/api/v2/pokemon?limit=2000&offset=0";
         var pokemons = restTemplate.getForObject(pokeapiURL, ListOfPokemon.class);
