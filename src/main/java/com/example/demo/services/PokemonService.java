@@ -81,10 +81,7 @@ public class PokemonService {
                 .filter(pokemon -> pokemon.getName().toLowerCase().contains(name))
                 .collect(Collectors.toList());
         if(pokemons.isEmpty()) {
-            pokemons = this.getPokemonAndSave(name);
-        }
-        if(pokemons.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found with that name");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No pokemon found");
         }
         return pokemons;
     }
